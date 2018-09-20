@@ -8,6 +8,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <cstdlib>
 
 int ls_l(const char* path)
 {	
@@ -171,65 +172,73 @@ int ls_ll(const char* path)
         struct group *getgrgid(gid_t gid);
 	int i = 0;	
 
+
 	if(stat(path, &st) == 0);
 	{
+
 		i += ((st.st_size/4096)+1)*4096/1024;
-                                std::cout<< '-';
-                                if(st.st_mode&S_IRUSR)
-                                        std::cout<< 'r';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IWUSR)
-                                        std::cout<< 'w';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IXUSR)
-                                        std::cout<< 'x';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IRGRP)
-                                        std::cout<< 'r';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IWGRP)
-                                        std::cout<< 'w';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IXGRP)
-                                        std::cout<< 'x';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IROTH)
-                                        std::cout<< 'r';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IWOTH)
-                                        std::cout<< 'w';
-                                else
-                                        std::cout<< '-';
-                                if(st.st_mode&S_IXOTH)
-                                        std::cout<< 'x';
-                                else
-                                        std::cout<< '-';
-                                std::cout<< " 1 ";	
-                                std::cout << getpwuid(st.st_uid)->pw_name << ' ';
-                                std::cout << getgrgid(st.st_gid)->gr_name << ' ';
+		std::cout<< '-';
+		if(st.st_mode&S_IRUSR)
+			std::cout<< 'r';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IWUSR)
+			std::cout<< 'w';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IXUSR)
+			std::cout<< 'x';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IRGRP)
+			std::cout<< 'r';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IWGRP)
+			std::cout<< 'w';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IXGRP)
+			std::cout<< 'x';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IROTH)
+			std::cout<< 'r';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IWOTH)
+			std::cout<< 'w';
+		else
+			std::cout<< '-';
+		if(st.st_mode&S_IXOTH)
+			std::cout<< 'x';
+		else
+			std::cout<< '-';
+		std::cout<< " 1 ";	
+		std::cout << getpwuid(st.st_uid)->pw_name << ' ';
+		std::cout << getgrgid(st.st_gid)->gr_name << ' ';
 
-				struct tm* pt = localtime(&(st.st_mtime));
+		struct tm* pt = localtime(&(st.st_mtime));
 
-                                const char* mon[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+		const char* mon[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 
-                                printf("%5d %s %d %d:%d", st.st_size, mon[pt->tm_mon], pt->tm_mday, pt->tm_hour, pt->tm_min);
+		printf("%5d %s %d %d:%d", st.st_size, mon[pt->tm_mon], pt->tm_mday, pt->tm_hour, pt->tm_min);
 
-                                std::cout<< ' ' <<path<<std::endl;
+		std::cout<< ' ' <<path<<std::endl;
 	}
-	
-	
+
+
 }
 
 
 int main(int argc, char** argv)
 {
+	if(argv[1] == NULL)
+        {
+                std::cout << "错误！"<< std::endl;
+                exit(1);
+        }	
+
 	DIR* dirp = opendir(argv[1]);
 
 	if(argc != 2)
